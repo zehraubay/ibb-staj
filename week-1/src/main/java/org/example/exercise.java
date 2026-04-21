@@ -3,7 +3,7 @@ package org.example;
 public class exercise {
 
     public static void main(String[] args) {
-
+/*
         variables();
         System.out.println("\n--------------------------\n");
         conditionals();
@@ -22,11 +22,30 @@ public class exercise {
         System.out.println("\n--------------------------\n");
         strings();
         System.out.println("\n-------------------------\n");
+        kalinInceSesliBulma();
+        System.out.println("\n--------------------------\n");
+        arkadasSayi();
+        System.out.println("\n-------------------------\n");
+        sayiBulma();
+        System.out.println("\n-------------------------\n");
+        abc();
+        System.out.println("\n-------------------------\n");
+        int sonuc = topla(5,3);
+        System.out.println(sonuc);
+
+        int toplam = topla2(5,5,8,9);
+        System.out.println(toplam);
+        */
+
+
 
     }
 
-
+/*
     public static void variables() {
+
+        System.out.println("Degiskenler Fonksiyonu");
+
         System.out.println("Java");
 
         int ogrenciSayisi = 12;
@@ -43,6 +62,9 @@ public class exercise {
     }
 
     public static void conditionals() {
+
+        System.out.println("Degiskenler Fonksiyonu");
+
         int sayi = 15;
         //if(sayi<21){
         //  System.out.println("sayi 21 den kücüktür");
@@ -75,7 +97,7 @@ public class exercise {
         System.out.println("En büyük sayı:" + enBuyuk);
     }
 
-    private static void switchDemo() {
+    public static void switchDemo() {
         //dallandırma, bir öğrencinin bir sınavdan aldığı nota göre ona mesaj vermeye yönelik puan sistemi
         char grade = 'A';
         switch (grade) {
@@ -122,7 +144,7 @@ public class exercise {
         System.out.println("Do-while döngüsü bitti");
     }
 
-    private static void arrays() {
+    public static void arrays() {
         String[] ogrenciler = new String[10];
         ogrenciler[0] = "Fatma";
         ogrenciler[1] = "Zehra";
@@ -137,7 +159,7 @@ public class exercise {
         }
     }
 
-    private static void demo2() {
+    public static void demo2() {
         double[] myArray = {1.2, 5.7, 8.4, 9.3}; //double[] myArray = new double[4];
         double total = 0;
         double enBuyuk = myArray[0];
@@ -154,7 +176,7 @@ public class exercise {
         System.out.println("En buyuk sayi = " + enBuyuk);
     }
 
-    private static void multiDimensionalArray() {
+    public static void multiDimensionalArray() {
         String[][] city = new String[3][3];
         city[0][0] = "İstanbul";
         city[0][1] = "Bursa";
@@ -174,31 +196,143 @@ public class exercise {
         }
     }
 
-    private static void strings() {
+    public static void strings() {
 
         String mesaj = "Mesaj gönderildi";
         System.out.println(mesaj);
 
-        /*
+
         System.out.println("Eleman sayısı:" + mesaj.length()); //mesajda 5 krakter var
             System.out.println("5. eleman: " + mesaj.charAt(4));
             System.out.println(mesaj.concat(" gönderildi."));
             System.out.println(mesaj.startsWith("m")); //büyük-küçük harf duyarlılığı vardır
-            System.out.println(mesaj.endsWith("."));
+            System.out.println(mesaj.endsWith(".")); //boolean olarak dönerler
 
             char[] karakterler = new char[5];
             mesaj.getChars(0,5, karakterler, 0);
             System.out.println(karakterler);
 
             System.out.println(mesaj.indexOf("a"));
-            System.out.println(mesaj.lastIndexOf("m")); */
+            System.out.println(mesaj.lastIndexOf("m"));
 
-            String newMessage = mesaj.replace(' ', '-');
-            System.out.println(newMessage);
+        String newMessage = mesaj.replace(' ', '-');
+        System.out.println(newMessage);
 
-            //System.out.println(mesaj.replace(' ','-');
+        //System.out.println(mesaj.replace(' ','-'));
 
+        System.out.println(mesaj.substring(5, 10));
+
+        for (String kelime : mesaj.split(" ")) {
+            System.out.println(kelime);
+        }
+
+        System.out.println(mesaj.toLowerCase());
+        System.out.println(mesaj.toUpperCase());
+        System.out.println(mesaj.trim());
+    }
+
+    public static void kalinInceSesliBulma() {
+        char harƒ = 'E';
+
+        switch (harƒ) {
+            case 'A':
+            case 'I':
+            case 'O':
+            case 'U':
+                System.out.println("Kalın sesli harf");
+                break;
+            default:
+                System.out.println("İnce sesli harf");
+
+        }
+    }
+
+    public static void mukemmelSayi() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Bir sayı giriniz: ");
+        int sayi = input.nextInt();
+        int toplam = 0;
+
+        for (int i = 1; i < sayi; i++) {
+            if (sayi % i == 0) {
+                toplam += i; //total = total + i
+            }
+        }
+
+        if (toplam == sayi) {
+            System.out.println("Mukemmel sayidir");
+        } else {
+            System.out.println("Mukemmel sayi degildir");
+        }
+    }
+
+    public static void arkadasSayi(){
+        int sayi1 = 220;
+        int sayi2 = 284;
+        int sayi1toplam = 0;
+        int sayi2toplam = 0;
+
+        for(int i = 1; i < sayi1; i++){
+            if(sayi1 % i == 0){
+                sayi1toplam += i;
+            }
+        }
+
+        for(int j = 1; j< sayi2; j++){
+            if(sayi2 % j == 0){
+                sayi2toplam += j;
+            }
+        }
+
+        if(sayi1 == sayi2toplam){   //if(sayi1==sayi2toplam && sayi2 == sayi1toplam)
+            if(sayi2 == sayi1toplam){
+                System.out.println("Arkadas sayilardir");
+            }else{
+                System.out.println("Arkadas sayilar degildir");
+            }
+        }
+    }
+
+
+    public static void sayiBulma(){
+        int[] sayilar = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        int aranacak = 5;
+        boolean varMi = false;
+
+        for(int i = 0; i < sayilar.length; i++){ // for (int sayi : sayilar)
+            if(sayilar[i] == aranacak){ // if(sayi==aranacak)
+                varMi = true;
+                break;
+            }
+        }
+
+        if(varMi){
+            System.out.println("Sayi vardir");
+        }else{
+            System.out.println("Sayi yoktur");
+        }
 
     }
 
+
+    public static int topla(int a, int b) {
+        return a+b;
+    }
+
+    public static int topla2(int... sayilar){
+        int toplam = 0;
+        for(int sayi:sayilar){
+            toplam += sayi;
+        }
+        return toplam;
+    }
+*/
+
+        public class customerManager{
+
+        }
+
+
+
 }
+
