@@ -328,11 +328,6 @@ public class exercise {
     }
 */
 
-        public class customerManager{
-
-        }
-
-
 
 }
 

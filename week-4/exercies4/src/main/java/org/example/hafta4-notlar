@@ -1,0 +1,234 @@
+// Pointer nedir?
+Pointer (İşaretçi), bir verinin değerini değil, o verinin bellekteki (RAM) adresini tutan bir değişkendir.
+Java'da C++'daki gibi manuel pointer yönetimi yoktur; Java bunu güvenli bir şekilde arka planda "Reference" (Referans) mantığıyla kendi yapar.
+
+Bellek Nasıl Çalışır?
+Bir değişken tanımladığında bilgisayar bellekte ona bir yer ayırır, her yerin bir adresi var:
+Bellek:
+Adres    Değer
+1001  →  5      ← int a = 5
+1002  →  10     ← int b = 10
+
+Pointer bu adresi tutar:
+int a = 5;
+int* ptr = &a;  // ptr, a'nın adresini tutuyor (1001)
+
+Ne Amaçla Kullanılır?
+1. Büyük verileri kopyalamadan taşımak
+Bir nesneyi fonksiyona vermek yerine adresini verirsin, bellekte yer açısından verimli.
+2. Dinamik bellek yönetimi
+İhtiyaç duyuldukça bellek ayır, işin bitince serbest bırak.
+3. Veri yapıları
+LinkedList, Tree gibi yapılar pointer olmadan kurulamaz:
+[1] → [2] → [3] → null
+ ↑     ↑
+ her düğüm bir sonrakinin adresini tutuyor
+
+Java'da direkt pointer yok ama referans aynı işi yapıyor:
+Araba araba1 = new Araba(); // araba1 nesnenin adresini tutuyor
+Araba araba2 = araba1;      // aynı adresi paylaşıyorlar
+
+NOT:
+Bilgisayar belleği dev bir apartman gibi düşün. Her dairenin bir numarası var (adres), her dairede bir şey duruyor (değer).
+Pointer ise o dairenin numarasını tutan bir kağıt parçası.
+
+&&Binary Search Nedir?
+Sıralı bir dizide arama yapmanın en hızlı yoludur.
+Mantığı: Dizinin ortasına bakar.
+Aranan değer ortadakinden küçükse sol tarafa, büyükse sağ tarafa odaklanır.
+Her adımda arama alanını yarı yarıya elediği için çok hızlıdır (Dizinin mutlaka sıralı olması şarttır).
+
+NOT:
+Normal arama (linear search) her elemanı tek tek bakar. 1000 elemanlı dizide en kötü ihtimalle 1000 karşılaştırma yapar.
+Binary search ise ortadaki elemana bakar, aranan değer ondan büyükse sağ yarıya, küçükse sol yarıya geçer. Her adımda eleman sayısı yarıya düşer.
+
+NOT 2:
+Karmaşıklık:
+
+Linear search → O(n) → 1.000.000 elemanda 1.000.000 adım
+Binary search → O(log n) → 1.000.000 elemanda sadece ~20 adım
+
+Önemli kural: Binary search sadece sıralı dizilerde çalışır.
+
+
+// Shortest Path Algoritmaları (Bellman-Ford, Dijkstra vb.)
+Bir graf (düğüm ve yol) yapısında, bir noktadan diğerine giden en kısa/ucuz yolu bulan algoritmalardır.
+
+Dijkstra: En yaygın olanıdır, pozitif ağırlıklı yollarda çalışır (Örn: Navigasyon uygulamaları).
+Bellman-Ford: Negatif değerlerin olduğu yollarda bile çalışabilir, Dijkstra'ya göre biraz daha yavaştır.
+
+// Heap / Stack Nedir, Farkları Nelerdir?
+
+STACK:
+Metot çağrıları ve primitive değerler burada tutulur.
+LIFO (Last In First Out) mantığıyla çalışır, tıpkı üst üste yığılmış tabaklar gibi.
+En son eklenen en önce çıkar. Metot çağrıldığında stack'e bir frame eklenir, metot bitince o frame otomatik silinir.
+Son derece hızlı ve küçüktür.
+
+int a = 5;       // stack'te
+boolean x = true; // stack'te
+
+Stack dolduğunda → StackOverflowError
+
+HEAP:
+new ile oluşturulan nesneler burada tutulur.
+Çok daha büyüktür.
+Garbage Collector (GC) kullanılmayan nesneleri periyodik olarak temizler.
+Stack'ten daha yavaştır.
+
+Araba araba = new Araba(); // Araba nesnesi heap'te
+                           // araba referansı stack'te
+
+Heap dolduğunda → OutOfMemoryError
+
+* String Pool heap'in özel bir köşesidir. Aynı string literalleri tek seferinde burada tutulur.
+
+* Ne tutarlar:
+Stack: Primitive, referanslar, metot çerçeveleri
+Heap: Nesneler, diziler
+
+
+// Git Nedir, Neden Kullanılır?
+
+Git bir versiyon kontrol sistemidir. Kod değişikliklerini takip eder, geçmişe dönmeyi sağlar, ekip çalışmasını kolaylaştırır.
+
+Temel çalışma mantığı:
+Çalışma dizini → (git add) → Staging Area → (git commit) → Local Repo → (git push) → GitHub
+
+Çalışma dizininde değişiklik yaparsın. git add ile commit'e dahil etmek istediğin dosyaları seçersin.
+git commit ile o anki halini kaydedersin. git push ile GitHub'a gönderirsin.
+
+Neden kullanılır?
+Bir özellik eklerken bir şeyleri bozduysan eski haline dönebilirsin. Aynı proje üzerinde birden fazla kişi çalışırken çakışmaları yönetir.
+Her değişikliğin ne zaman, kim tarafından, neden yapıldığını görir. Branch açarak ana kodu bozmadan yeni özellik geliştirebilirsin.
+
+Temel komutlar:
+git init          # repoyu başlat
+git add .         # tüm değişiklikleri seç
+git commit -m ""  # kaydet
+git push          # GitHub'a gönder
+git pull          # GitHub'dan çek
+git status        # değişiklikleri gör
+git log           # geçmişi gör
+
+// OutOfMemoryError Nedir?
+
+Heap belleği tamamen dolduğunda fırlatılan hata.
+
+java.lang.OutOfMemoryError: Java heap space
+
+Sebepleri:
+Çok fazla nesne oluşturmak ve bunları bellekte tutmak en yaygın sebeptir.
+Büyük dosyaları tümüyle belleğe yüklemek de sıkça karşılaşılan bir durumdur.
+Bellek sızıntısı da önemli bir sebeptir; kullanılmayan nesnelerin referansı hala tutuluyorsa GC onları temizleyemez ve bellek giderek dolar.
+
+Bellek sızıntısı örneği:
+List<byte[]> liste = new ArrayList<>();
+while (true) {
+    liste.add(new byte[1024]); // sürekli yeni nesne, hiç silinmiyor
+}
+// → OutOfMemoryError
+
+Çözümleri:
+JVM'e daha fazla bellek ver:
+java -Xmx512m MainClass
+
+Kullanılmayan nesneleri null'a set et:
+javabuyukNesne = null; // GC artık temizleyebilir
+
+
+
+// Database Nedir, Ne Gibi Faydalar Sağlar?
+
+Database (veritabanı), verileri düzenli, kalıcı ve erişilebilir şekilde saklamak için kullanılan sistemdir.
+Program bir değişkende veri tutarsa o veri program kapanınca kaybolur. Veritabanı ise diski kullandığı için program kapansa bile veri kalır.
+
+Sağladığı faydalar:
+Kalıcılık: Veriler diske yazıldığı için program kapansa, bilgisayar yeniden başlasa bile kaybolmaz.
+
+Hız: İyi tasarlanmış bir veritabanı milyonlarca kayıt arasında milisaniyeler içinde arama yapabilir.
+İndeksler sayesinde tüm tabloyu taramak yerine direkt istenen veriye gider.
+
+Çok kullanıcı desteği: Aynı anda binlerce kullanıcı aynı veriye erişebilir. Transaction yönetimi sayesinde çakışmalar önlenir.
+
+Güvenlik: Kullanıcı yetkilendirmesi yapılır, kim neye erişebilir belirlenir. Veriler şifrelenebilir.
+
+Tutarlılık: Foreign key, constraint gibi kurallarla veriler arasındaki ilişki bütünlüğü korunur.
+Örneğin var olmayan bir kullanıcıya sipariş atanamaz.
+
+Yedekleme: Veritabanları periyodik yedekleme mekanizmalarıyla veri kaybını önler.
+
+İlişkisel veritabanları (PostgreSQL, MySQL, Oracle) tablo yapısıyla çalışır, SQL diliyle sorgulanır. Tablolar arasında ilişki kurulabilir.
+NoSQL veritabanları (MongoDB, Redis) ise esnek yapıya sahiptir, farklı veri formatlarını destekler.
+
+
+
+
+** Yeni öğrenilen terimler:
+
+Frame Nedir?
+Her metot çağrıldığında stack'te ona özel bir alan açılır, buna frame denir.
+İçinde o metodun değişkenleri ve parametreleri tutulur. Metot bitince frame silinir.
+
+public static void main(String[] args) {
+    int sonuc = topla(3, 5); // topla çağrıldı → stack'e frame eklendi
+}
+
+public static int topla(int a, int b) {
+    return a + b; // metot bitti → frame silindi
+}
+
+Stack o an şöyle görünür:
+topla frame: a=3, b=5 |  ← en üstte
+main frame: sonuc=?   |  ← altta
+topla bitince üstteki frame kalkar, main devam eder.
+
+
+Primitive Nedir?
+
+Java'da iki tür değişken var:
+Primitive (ilkel) tipler → değerin kendisini direkt tutar:
+
+int a = 5;        // 5 direkt stack'te
+double pi = 3.14; // 3.14 direkt stack'te
+boolean x = true; // true direkt stack'te
+char c = 'A';     // 'A' direkt stack'te
+
+Referans tipler → nesnenin adresini tutar:
+
+Araba araba = new Araba(); // adres stack'te, nesne heap'te
+String s = "Merhaba";      // adres stack'te, nesne heap'te
+
+Java'daki 8 primitive tip: int, double, float, long, short, byte, boolean, char
+
+
+Recursive (Özyineleme) Nedir?
+Bir metodun kendini tekrar çağırması. Her çağrıda stack'e yeni bir frame eklenir.
+
+public static int faktoriyel(int n) {
+    if (n == 1) return 1;          // dur koşulu
+    return n * faktoriyel(n - 1);  // kendini çağırıyor
+}
+
+faktoriyel(4);
+
+
+Stack bu sırayla büyür:
+| faktoriyel(1) |  ← en son eklendi
+| faktoriyel(2) |
+| faktoriyel(3) |
+| faktoriyel(4) |  ← ilk eklendi
+| main          |  ← en altta
+
+Sonra şöyle küçülür:
+faktoriyel(1) = 1         → frame silindi
+faktoriyel(2) = 2 × 1 = 2 → frame silindi
+faktoriyel(3) = 3 × 2 = 6 → frame silindi
+faktoriyel(4) = 4 × 6 = 24 → frame silindi
+
+StackOverflowError tam burada çıkar. Dur koşulu yazmazsan ya da yanlış yazarsan metot kendini sonsuza kadar çağırır, stack dolar ve program çöker:
+
+public static int faktoriyel(int n) {
+    return n * faktoriyel(n - 1); // ← dur koşulu yok!
+    // sonsuza kadar çağırır → StackOverflowError
+}
