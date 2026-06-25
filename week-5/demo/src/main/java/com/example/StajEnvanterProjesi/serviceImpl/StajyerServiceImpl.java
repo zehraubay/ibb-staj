@@ -1,5 +1,7 @@
 package com.example.StajEnvanterProjesi.serviceImpl;
 
+import com.example.StajEnvanterProjesi.MessageHelper;
+import com.example.StajEnvanterProjesi.exception.BaseException;
 import com.example.StajEnvanterProjesi.entity.Stajyer;
 import com.example.StajEnvanterProjesi.entity.dto.Stajyer.StajyerResponse;
 import com.example.StajEnvanterProjesi.entity.dto.Stajyer.StajyerRequest;
@@ -16,6 +18,9 @@ public class StajyerServiceImpl implements StajyerService {
 
     @Autowired
     private StajyerRepository stajyerRepository;
+
+    @Autowired
+    private MessageHelper messageHelper;
 
     private StajyerResponse toResponse(Stajyer stajyer) {
         if (stajyer == null) return null;
@@ -83,10 +88,8 @@ public class StajyerServiceImpl implements StajyerService {
         Optional<Stajyer> mevcutAktif = stajyerRepository
                 .findByEmailAndStatusTrue(request.getEmail());
         if (mevcutAktif.isPresent()) {
-            throw new RuntimeException(
-                    "Bu e-posta adresi ile aktif bir stajyer kaydı bulunmaktadır: "
-                            + request.getEmail()
-            );
+            throw new BaseException(messageHelper.get("error.mail.mevcut"));
+
         }
 
         if ("Devam Ediyor".equalsIgnoreCase(request.getDurum())) {
@@ -110,10 +113,7 @@ public class StajyerServiceImpl implements StajyerService {
                 Optional<Stajyer> mailKontrol = stajyerRepository
                         .findByEmailAndStatusTrue(request.getEmail());
                 if (mailKontrol.isPresent()) {
-                    throw new RuntimeException(
-                            "Bu e-posta başka bir aktif stajyere ait: "
-                                    + request.getEmail()
-                    );
+                    throw new BaseException(messageHelper.get("error.mail.baska.stajyer"));
                 }
             }
 
@@ -150,154 +150,3 @@ public class StajyerServiceImpl implements StajyerService {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//@Service
-//public class StajyerServiceImpl implements StajyerService {
-//
-//    @Autowired
-//    private StajyerRepository stajyerRepository;
-//
-//    @Override
-//    public Optional<StajyerResponse> findById(Long id) {
-//        Optional<Stajyer> stajyer = stajyerRepository.findById(id);
-//
-//        if (stajyer.isPresent()) {
-//
-//            Stajyer s = stajyer.get();
-//
-//            StajyerResponse response = new StajyerResponse();
-//
-//            response.setAd(s.getAd());
-//            response.setSoyad(s.getSoyad());
-//            response.setUniversite(s.getUniversite());
-//            response.setBolum(s.getBolum());
-//            response.setSinif(s.getSinif());
-//            response.setStajBaslangicTarihi(s.getStajBaslangicTarihi());
-//            response.setStajBitisTarihi(s.getStajBitisTarihi());
-//            response.setDurum(s.getDurum());
-//            response.setStatus(s.getStatus());
-//
-//            return Optional.of(response);
-//        }
-//
-//        return Optional.empty();
-//    }
-//
-//
-//    @Override
-//    public List<StajyerResponse> findAll() {
-//
-//        List<Stajyer> stajyerList = stajyerRepository.findAll();
-//
-//        return stajyerList.stream().map(s -> {
-//
-//            StajyerResponse response = new StajyerResponse();
-//
-//            // response.setId(s.getId());
-//            response.setAd(s.getAd());
-//            response.setSoyad(s.getSoyad());
-//            response.setUniversite(s.getUniversite());
-//            response.setBolum(s.getBolum());
-//            response.setSinif(s.getSinif());
-//            response.setStajBaslangicTarihi(s.getStajBaslangicTarihi());
-//            response.setStajBitisTarihi(s.getStajBitisTarihi());
-//            response.setDurum(s.getDurum());
-//            response.setStatus(s.getStatus());
-//
-//            return response;
-//
-//        }).collect(Collectors.toList());
-//    }
-//
-//
-//
-//@Override
-//public Stajyer save(Stajyer stajyer) {
-//
-//    if ("Devam Ediyor".equalsIgnoreCase(stajyer.getDurum())) {
-//        stajyer.setStatus(true);
-//    } else {
-//        stajyer.setStatus(false);
-//    }
-//
-//    return stajyerRepository.save(stajyer);
-//}
-//
-//@Override
-//public Stajyer update(Long id, Stajyer stajyer) {
-//    Optional<Stajyer> mevcutStajyer = stajyerRepository.findById(id);
-//    if (mevcutStajyer.isPresent()) {
-//        Stajyer guncellenecek = mevcutStajyer.get();
-//        guncellenecek.setAd(stajyer.getAd());
-//        guncellenecek.setSoyad(stajyer.getSoyad());
-//        guncellenecek.setEmail(stajyer.getEmail());
-//        guncellenecek.setTelefon(stajyer.getTelefon());
-//        guncellenecek.setUniversite(stajyer.getUniversite());
-//        guncellenecek.setBolum(stajyer.getBolum());
-//        guncellenecek.setSinif(stajyer.getSinif());
-//        guncellenecek.setStajBaslangicTarihi(stajyer.getStajBaslangicTarihi());
-//        guncellenecek.setStajBitisTarihi(stajyer.getStajBitisTarihi());
-//        guncellenecek.setDurum(stajyer.getDurum());
-//
-//        if ("Devam Ediyor".equalsIgnoreCase(stajyer.getDurum())) {
-//            guncellenecek.setStatus(true);
-//        } else {
-//            guncellenecek.setStatus(false);
-//        }
-//        return stajyerRepository.save(guncellenecek);
-//
-//    }
-//    return null;
-//}
-//
-//@Override
-//public void delete(Long id) {
-//    Optional<Stajyer> mevcutStajyer = stajyerRepository.findById(id);
-//
-//    if (mevcutStajyer.isPresent()) {
-//        Stajyer stajyer = mevcutStajyer.get();
-//        stajyer.setStatus(false);
-//        // stajyer.setAd(mevcutStajyer.get().getAd());
-//        stajyerRepository.save(stajyer);
-//    }
-//}
-//
-//}
-

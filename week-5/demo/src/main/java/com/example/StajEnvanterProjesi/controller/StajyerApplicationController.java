@@ -1,6 +1,7 @@
 package com.example.StajEnvanterProjesi.controller;
 
 import com.example.StajEnvanterProjesi.entity.StajyerApplication;
+import com.example.StajEnvanterProjesi.entity.dto.Stajyer.StajyerGunKalanResponse;
 import com.example.StajEnvanterProjesi.service.StajyerApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,17 +70,10 @@ public class StajyerApplicationController {
     }
 
     @PutMapping("/sorumluAyril/{stajyerId}")
-    public ResponseEntity<String> sorumluAyril(@PathVariable Long stajyerId) {
-        String mesaj = stajyerApplicationService.sorumluAyril(stajyerId);
-        return ResponseEntity.ok(mesaj);
+    public ResponseEntity<StajyerApplication> sorumluAyril(@PathVariable Long stajyerId) {
+        StajyerApplication kayit = stajyerApplicationService.sorumluAyril(stajyerId);
+        return ResponseEntity.ok(kayit);
     }
-
-//    @PutMapping("/sorumluAyril/{stajyerId}")
-//    public ResponseEntity<Void> sorumluAyril(@PathVariable Long stajyerId) {
-//        stajyerApplicationService.sorumluAyril(stajyerId);
-//        return ResponseEntity.ok().build();
-//    }
-
 
     @PostMapping("/sorumluAta/{stajyerId}/{sorumluId}")
     public ResponseEntity<StajyerApplication> sorumluAta(
@@ -90,6 +84,11 @@ public class StajyerApplicationController {
     }
 
 
+    @GetMapping("/gunKalan")
+    public ResponseEntity<List<StajyerGunKalanResponse>> gunKalan() {
+        return ResponseEntity.ok(stajyerApplicationService.gunKalanHesapla());
+    }
+
     @PutMapping("/delete/{id}")
     public ResponseEntity<Void>
     delete(@PathVariable Long id) {
@@ -99,37 +98,3 @@ public class StajyerApplicationController {
         return ResponseEntity.ok().build();
     }
 }
-
-
-
-
-
-
-
-
-//
-//@PostMapping("/save")
-//public ResponseEntity<StajyerApplication>
-//save(@RequestBody StajyerApplication stajyerApplication) {
-//
-//    return ResponseEntity.ok(
-//            stajyerApplicationService.save(stajyerApplication)
-//    );
-//}
-//
-//@PutMapping("/update/{id}")
-//public ResponseEntity<StajyerApplication>
-//update(@PathVariable Long id,
-//       @RequestBody StajyerApplication stajyerApplication) {
-//
-//    StajyerApplication response =
-//            stajyerApplicationService.update(
-//                    id,
-//                    stajyerApplication);
-//
-//    if (response == null) {
-//        return ResponseEntity.notFound().build();
-//    }
-//
-//    return ResponseEntity.ok(response);
-//}

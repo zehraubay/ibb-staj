@@ -1,6 +1,11 @@
 package com.example.StajEnvanterProjesi.serviceImpl;
 
+import com.example.StajEnvanterProjesi.MessageHelper;
+import com.example.StajEnvanterProjesi.exception.BaseException;
 import com.example.StajEnvanterProjesi.entity.Sorumlu;
+import com.example.StajEnvanterProjesi.entity.dto.Stajyer.StajyerGunKalanResponse;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import com.example.StajEnvanterProjesi.entity.Stajyer;
 import com.example.StajEnvanterProjesi.entity.StajyerApplication;
 import com.example.StajEnvanterProjesi.repository.SorumluRepository;
@@ -8,17 +13,15 @@ import com.example.StajEnvanterProjesi.repository.StajyerApplicationRepository;
 import com.example.StajEnvanterProjesi.repository.StajyerRepository;
 import com.example.StajEnvanterProjesi.service.StajyerApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StajyerApplicationServiceImpl
-        implements StajyerApplicationService {
+public class StajyerApplicationServiceImpl implements StajyerApplicationService {
+
 
     @Autowired
     private StajyerApplicationRepository stajyerApplicationRepository;
@@ -28,6 +31,9 @@ public class StajyerApplicationServiceImpl
 
     @Autowired
     private SorumluRepository sorumluRepository;
+
+    @Autowired
+    private MessageHelper messageHelper;
 
     @Override
     public StajyerApplication findById(Long id) {
@@ -39,19 +45,9 @@ public class StajyerApplicationServiceImpl
         return stajyerApplicationRepository.findAll();
     }
 
-    // 1.metotumuz status=true aktif kaydı var mı
-//    private void aktifKayitKontrol(Stajyer stajyer) {
-//        Optional<StajyerApplication> aktifKayit =
-//                stajyerApplicationRepository.findByStajyersAndStatusTrue(stajyer);
-//
-//        if (aktifKayit.isPresent()) {
-//            throw new RuntimeException(
-//                    "Bu stajyerin zaten aktif devam eden bir stajı bulunmaktadır."
-//            );
-//        }
-//    }
 
-    // 2. metot En son kaydın bitiş tarihi bugünden büyük mü
+
+    // En son kaydın bitiş tarihi bugünden büyük mü
 
     private void tarihKontrol(Stajyer stajyer) {
         Optional<StajyerApplication> sonKayit =
@@ -61,28 +57,24 @@ public class StajyerApplicationServiceImpl
             LocalDate bitisTarihi = sonKayit.get().getStajyers().getStajBitisTarihi();
             LocalDate bugun = LocalDate.now();
 
-//            if (bitisTarihi != null && bitisTarihi.isAfter(bugun)) {
-//                throw new RuntimeException(
-//                        "Bu stajyerin mevcut staj bitiş tarihi henüz geçmemiştir: " + bitisTarihi);
-//            }
         }
     }
 
     // ana kayıt metodumuz
 
     @Override
-    public StajyerApplication stajyerKaydet(Long stajyerId, Long sorumluId) throws Exception  {
+    public StajyerApplication stajyerKaydet(Long stajyerId, Long sorumluId) {
 
         Stajyer stajyer = stajyerRepository.findById(stajyerId)
-                .orElseThrow(() -> new RuntimeException("Stajyer bulunamadı: " + stajyerId));
+                .orElseThrow(() -> new BaseException(messageHelper.get("error.stajyer.bulunamadi", stajyerId)));
 
         Sorumlu sorumlu = sorumluRepository.findById(sorumluId)
-                .orElseThrow(() -> new RuntimeException("Sorumlu bulunamadı: " + sorumluId));
+                .orElseThrow(() -> new BaseException(messageHelper.get("error.sorumlu.bulunamadi", sorumluId)));
 
         StajyerApplication stajyerApplication = stajyerApplicationRepository.findByStatusTrueAndStajyers_Id(stajyerId);
 
         if (stajyerApplication != null && Boolean.TRUE.equals(stajyerApplication.getAsilMi())) {
-            throw new Exception("Bu stajyer zaten asil olarak atanmış");
+            throw new BaseException(messageHelper.get("error.stajyer.asil.atanmis"));
         }
         tarihKontrol(stajyer);
 
@@ -99,30 +91,22 @@ public class StajyerApplicationServiceImpl
     //sorumlu ayrilirsa
 
     @Override
-    public String sorumluAyril(Long stajyerId) {
+    public StajyerApplication sorumluAyril(Long stajyerId) {
 
         Stajyer stajyer = stajyerRepository.findById(stajyerId)
-                .orElseThrow(() -> new RuntimeException("Stajyer bulunamadı: " + stajyerId));
+                .orElseThrow(() -> new BaseException(messageHelper.get("error.stajyer.bulunamadi", stajyerId)));
 
         // Asil sorumluyu bul ve pasife al
-        StajyerApplication asilSorumlu = stajyerApplicationRepository
-                .findByStajyersAndAsilMiTrueAndStatusTrue(stajyer)
-                .orElseThrow(() -> new RuntimeException("Aktif asil sorumlu bulunamadı."));
+        StajyerApplication asilSorumlu = stajyerApplicationRepository.findByStajyersAndAsilMiTrueAndStatusTrue(stajyer);
 
-        asilSorumlu.setStatus(false);
-        stajyerApplicationRepository.save(asilSorumlu);
-
-        // Yedek var mı
-        Optional<StajyerApplication> yedek = stajyerApplicationRepository
-                .findByStajyersAndAsilMiFalseAndStatusTrue(stajyer);
-
-        if (yedek.isPresent()) {
-            yedek.get().setAsilMi(true);
-            stajyerApplicationRepository.save(yedek.get());
-            return "Yedek sorumlu asile terfi etti.";
+        if (asilSorumlu == null) {
+            throw new BaseException(messageHelper.get("error.sorumlu.atanmis"));
         }
+
+        asilSorumlu.setAsilMi(false);
+        return stajyerApplicationRepository.save(asilSorumlu);
+
         // Yedek yoksa manuel atama bekliyouz hata vermiyoruz
-        return "Uyarı: Bu stajyerin sorumlusu kalmadı. Lütfen yeni sorumlu atayınız.";
     }
 
 
@@ -132,18 +116,15 @@ public class StajyerApplicationServiceImpl
     public StajyerApplication yeniSorumluAta(Long stajyerId, Long sorumluId) {
 
         Stajyer stajyer = stajyerRepository.findById(stajyerId)
-                .orElseThrow(() -> new RuntimeException("Stajyer bulunamadı: " + stajyerId));
+                .orElseThrow(() -> new BaseException(messageHelper.get("error.stajyer.bulunamadi", stajyerId)));
 
         Sorumlu sorumlu = sorumluRepository.findById(sorumluId)
-                .orElseThrow(() -> new RuntimeException("Sorumlu bulunamadı: " + sorumluId));
+                .orElseThrow(() -> new BaseException(messageHelper.get("error.sorumlu.bulunamadi", sorumluId)));
 
         // halihazırda aktif asil sorumlu var mı bakıyoruz
-        Optional<StajyerApplication> mevcutAsil = stajyerApplicationRepository
+        StajyerApplication mevcutAsil = stajyerApplicationRepository
                 .findByStajyersAndAsilMiTrueAndStatusTrue(stajyer);
 
-        if (mevcutAsil.isPresent()) {
-            throw new RuntimeException("Zaten aktif bir asil sorumlu var.");
-        }
 
         StajyerApplication yeniSorumlu = new StajyerApplication();
         yeniSorumlu.setStajyers(stajyer);
@@ -158,29 +139,11 @@ public class StajyerApplicationServiceImpl
     @Override
     public StajyerApplication yedekSorumluEkle(Long stajyerId, Long sorumluId) {
 
-        Stajyer stajyer = stajyerRepository.findById(stajyerId)
-                .orElseThrow(() -> new RuntimeException(
-                        "Stajyer bulunamadı: " + stajyerId));
+        Stajyer stajyer = stajyerRepository.findById(stajyerId).orElseThrow(() ->
+                new RuntimeException(messageHelper.get("error.stajyer.bulunamadi", stajyerId)));
 
-        Sorumlu sorumlu = sorumluRepository.findById(sorumluId)
-                .orElseThrow(() -> new RuntimeException(
-                        "Sorumlu bulunamadı: " + sorumluId));
-
-        // Zaten yedek var mı
-        Optional<StajyerApplication> mevcutYedek = stajyerApplicationRepository
-                .findByStajyersAndAsilMiFalseAndStatusTrue(stajyer);
-        if (mevcutYedek.isPresent()) {
-            throw new RuntimeException(
-                    "Bu stajyerin zaten bir yedek sorumlusu bulunmaktadır.");
-        }
-
-//        // Asil sorumlu var mı
-//        Optional<StajyerApplication> mevcutAsil = stajyerApplicationRepository
-//                .findByStajyersAndAsilMiTrueAndStatusTrue(stajyer);
-//        if (!mevcutAsil.isPresent()) {
-//            throw new RuntimeException(
-//                    "Yedek eklemeden önce asil sorumlu atanmalıdır.");
-//        }
+        Sorumlu sorumlu = sorumluRepository.findById(sorumluId).orElseThrow(() ->
+                new RuntimeException(messageHelper.get("error.sorumlu.bulunamadi", sorumluId)));
 
         StajyerApplication yedek = new StajyerApplication();
         yedek.setStajyers(stajyer);
@@ -191,16 +154,46 @@ public class StajyerApplicationServiceImpl
         return stajyerApplicationRepository.save(yedek);
     }
 
-    // soft delete yani komple silmiyoruz
-
     @Override
-    public void delete(Long id) {
-        Optional<StajyerApplication> mevcut =
-                stajyerApplicationRepository.findById(id);
-        if (mevcut.isPresent()) {
-            mevcut.get().setStatus(false);
-            stajyerApplicationRepository.save(mevcut.get());
+    public List<StajyerGunKalanResponse> gunKalanHesapla() {
+        LocalDate bugun = LocalDate.now();
+        LocalDate besGunSonra = bugun.plusDays(5);
+
+        List<Stajyer> stajyerler = stajyerRepository
+                .findByDurumAndStatusTrueAndStajBitisTarihiBetween(
+                        "Devam Ediyor",
+                        bugun,
+                        besGunSonra
+                );
+
+        List<StajyerGunKalanResponse> sonuc = new java.util.ArrayList<>();
+
+        for (Stajyer stajyer : stajyerler) {
+            long gunKalan = ChronoUnit.DAYS.between(bugun, stajyer.getStajBitisTarihi());
+            sonuc.add(new StajyerGunKalanResponse(
+                    stajyer.getAd(),
+                    stajyer.getSoyad(),
+                    stajyer.getStajBitisTarihi(),
+                    gunKalan
+            ));
         }
+
+        return sonuc;
     }
-}
+
+
+        // soft delete yani komple silmiyoruz
+        @Override
+        public void delete (Long id){
+            Optional<StajyerApplication> mevcut =
+                    stajyerApplicationRepository.findById(id);
+            if (mevcut.isPresent()) {
+                mevcut.get().setStatus(false);
+                stajyerApplicationRepository.save(mevcut.get());
+            }
+        }
+
+    }
+
+
 

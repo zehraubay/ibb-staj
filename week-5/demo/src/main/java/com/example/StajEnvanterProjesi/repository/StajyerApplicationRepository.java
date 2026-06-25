@@ -17,15 +17,16 @@ public interface StajyerApplicationRepository extends JpaRepository<StajyerAppli
     Optional<StajyerApplication> findTopByStajyersOrderByIdDesc(Stajyer stajyer);
 
     //Asil Sorumluyu bulma
-    Optional<StajyerApplication> findByStajyersAndAsilMiTrueAndStatusTrue(Stajyer stajyer);
+    StajyerApplication findByStajyersAndAsilMiTrueAndStatusTrue(Stajyer stajyer);
 
     //Yedek sorumluyu bulma
-    Optional<StajyerApplication> findByStajyersAndAsilMiFalseAndStatusTrue(Stajyer stajyer);
+    StajyerApplication findByStajyersAndAsilMiFalseAndStatusTrue(Stajyer stajyer);
 
     // Bu sorumlu başka bir stajyere asil olarak atanmış mı
     Optional<StajyerApplication> findBySorumlusAndAsilMiTrueAndStatusTrue(Sorumlu sorumlu);
 
     StajyerApplication findByStatusTrueAndStajyers_Id(Long stajyerId);
 
+    List<StajyerApplication> findByAsilMiTrueAndStatusTrue();
 }
 

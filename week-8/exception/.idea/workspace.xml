@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e3798fe1-c077-4c51-a628-bc14e1c326ff" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/MessageHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/MessageSourceConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/resources/messages.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/controller/StajyerApplicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/controller/StajyerApplicationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/repository/StajyerApplicationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/repository/StajyerApplicationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/service/StajyerApplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/service/StajyerApplicationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/serviceImpl/StajyerApplicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/serviceImpl/StajyerApplicationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/serviceImpl/StajyerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../week-5/demo/src/main/java/com/example/StajEnvanterProjesi/serviceImpl/StajyerServiceImpl.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="3FIdujwspEnzriO1TBg5t5l78xn" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/demo&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/user/IdeaProjects/ibb-staj/week-8/exception/src/main/java/org/example/starter/Main.java&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-84258761d1cc-intellij.indexing.shared.core-IU-243.28141.18" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.28141.18" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e3798fe1-c077-4c51-a628-bc14e1c326ff" name="Changes" comment="" />
+      <created>1781766742810</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1781766742810</updated>
+      <workItem from="1781766743745" duration="2967000" />
+      <workItem from="1781780969784" duration="4000" />
+      <workItem from="1781780987716" duration="1000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/starter/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

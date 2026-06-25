@@ -22,30 +22,3 @@ public interface StajyerService {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    Optional<StajyerResponse> findById(Long id);
-//
-//    List<StajyerResponse> findAll();
-//
-//    Stajyer save(Stajyer stajyer);
-//
-//    Stajyer update(Long id, Stajyer stajyer);
-//
-//    void delete(Long id);
